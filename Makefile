@@ -9,7 +9,7 @@ VERSION=$(shell git describe --tags --always --long --dirty)
 all: test build ## Build and run tests
 
 test: ## Run unit tests
-	go test .
+	go test -v ./...
 
 build: windows linux darwin ## Build binaries
 	@echo version: $(VERSION)
@@ -21,13 +21,13 @@ linux: $(LINUX) ## Build for Linux
 darwin: $(DARWIN) ## Build for Darwin (macOS)
 
 $(WINDOWS):
-	env GOOS=windows GOARCH=amd64 go build -i -v -o build/$(WINDOWS) -ldflags="-s -w -X main.version=$(VERSION)"  .
+	env GOOS=windows GOARCH=amd64 go build -v -o build/$(WINDOWS) -ldflags="-s -w -X main.version=$(VERSION)"  -v ./...
 
 $(LINUX):
-	env GOOS=linux GOARCH=amd64 go build -i -v -o build/$(LINUX) -ldflags="-s -w -X main.version=$(VERSION)"  .
+	env GOOS=linux GOARCH=amd64 go build -v -o build/$(LINUX) -ldflags="-s -w -X main.version=$(VERSION)"  -v ./...
 
 $(DARWIN):
-	env GOOS=darwin GOARCH=amd64 go build -i -v -o build/$(DARWIN) -ldflags="-s -w -X main.version=$(VERSION)"  .
+	env GOOS=darwin GOARCH=amd64 go build -v -o build/$(DARWIN) -ldflags="-s -w -X main.version=$(VERSION)" -v ./...
 
 clean: ## Remove previous build
 	rm -f $(WINDOWS) $(LINUX) $(DARWIN)
